@@ -1,0 +1,421 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const countries = [
+  { name: "Argentina", flag: "🇦🇷", code: "AR" },
+  { name: "Brasil", flag: "🇧🇷", code: "BR" },
+  { name: "Chile", flag: "🇨🇱", code: "CL" },
+  { name: "Colombia", flag: "🇨🇴", code: "CO" },
+  { name: "Ecuador", flag: "🇪🇨", code: "EC" },
+  { name: "Paraguay", flag: "🇵🇾", code: "PY" },
+  { name: "Perú", flag: "🇵🇪", code: "PE" },
+  { name: "Uruguay", flag: "🇺🇾", code: "UY" },
+];
+---
+
+<Layout title="Solicitar Cotización - ShipLog">
+  <div class="quote-page">
+    <div class="quote-background"></div>
+    
+    <div class="quote-container">
+      <!-- Paso 1: Selección de país -->
+      <div id="step1" class="quote-step active">
+        <div class="step-header fade-in">
+          <h1>¿A dónde necesitas enviar?</h1>
+          <p>Selecciona el país de destino para tu carga</p>
+        </div>
+        
+        <div class="countries-selector">
+          {countries.map((country, index) => (
+            <button 
+              class="country-option scale-in" 
+              data-country={country.code}
+              style={`animation-delay: ${index * 0.05}s`}
+            >
+              <span class="country-flag">{country.flag}</span>
+              <span class="country-name">{country.name}</span>
+              <svg class="country-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          ))}
+        </div>
+      </div>
+      
+      <!-- Paso 2: Formulario -->
+      <div id="step2" class="quote-step">
+        <div class="step-header">
+          <button class="back-button" id="backBtn">
+            <svg width="24" height="24" viewBox="0 0 20 20" fill="none">
+              <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Volver</span>
+          </button>
+          <h1>Completa tu solicitud</h1>
+          <p>Envío a <span id="selectedCountry" class="highlight"></span></p>
+        </div>
+        
+        <form class="quote-form" id="quoteForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="company">Empresa *</label>
+              <input type="text" id="company" name="company" required placeholder="Nombre de tu empresa" />
+            </div>
+            
+            <div class="form-group">
+              <label for="contact">Nombre de Contacto *</label>
+              <input type="text" id="contact" name="contact" required placeholder="Tu nombre completo" />
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" required placeholder="correo@empresa.com" />
+            </div>
+            
+            <div class="form-group">
+              <label for="phone">Teléfono *</label>
+              <input type="tel" id="phone" name="phone" required placeholder="+XX XXX XXX XXXX" />
+            </div>
+            
+            <div class="form-group">
+              <label for="origin">País de Origen *</label>
+              <select id="origin" name="origin" required>
+                <option value="">Seleccione...</option>
+                {countries.map(country => (
+                  <option value={country.code}>{country.flag} {country.name}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="cargoType">Tipo de Carga *</label>
+              <select id="cargoType" name="cargoType" required>
+                <option value="">Seleccione...</option>
+                <option value="maquinaria">🏗️ Maquinaria Pesada</option>
+                <option value="construccion">🧱 Materiales de Construcción</option>
+                <option value="mineria">⛏️ Equipos Mineros</option>
+                <option value="agricola">🌾 Maquinaria Agrícola</option>
+                <option value="industrial">🏭 Equipos Industriales</option>
+                <option value="otro">📦 Otro</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="weight">Peso Estimado (Toneladas) *</label>
+              <input type="number" id="weight" name="weight" min="0" step="0.1" required placeholder="0.0" />
+            </div>
+            
+            <div class="form-group">
+              <label for="urgency">Urgencia *</label>
+              <select id="urgency" name="urgency" required>
+                <option value="">Seleccione...</option>
+                <option value="normal">📅 Normal (15-30 días)</option>
+                <option value="express">⚡ Express (7-15 días)</option>
+                <option value="urgent">🚨 Urgente (3-7 días)</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group full-width">
+            <label for="details">Detalles Adicionales</label>
+            <textarea id="details" name="details" rows="4" placeholder="Describa su carga, dimensiones especiales, fechas requeridas, etc."></textarea>
+          </div>
+          
+          <button type="submit" class="btn-submit">
+            <span>Enviar Solicitud</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .quote-page {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 8rem 0 4rem;
+  }
+
+  .quote-background {
+    position: fixed;
+    inset: 0;
+    background-color: #012e72ff;
+    z-index: -2;
+  }
+
+  .quote-background::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* AQUÍ VA TU IMAGEN DE FONDO */
+    background-image: url('/images/quote-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.15; /* Ajusta la transparencia (0.1 = muy transparente, 0.3 = más visible) */
+    z-index: -1;
+  }
+
+  .quote-background::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 0%, transparent 50%);
+  }
+
+  .quote-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  .quote-step {
+    display: none;
+  }
+
+  .quote-step.active {
+    display: block;
+  }
+
+  .step-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: white;
+  }
+
+  .step-header h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    color: white;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    letter-spacing: -1px;
+  }
+
+  .step-header p {
+    font-size: 1.3rem;
+    opacity: 0.95;
+  }
+
+  .highlight {
+    color: #FFD700;
+    font-weight: 800;
+  }
+
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .back-button:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateX(-5px);
+  }
+
+  .countries-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .country-option {
+    background: white;
+    border: 3px solid transparent;
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  .country-option:hover {
+    transform: translateY(-10px);
+    border-color: #FFD700;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .country-flag {
+    font-size: 3rem;
+  }
+
+  .country-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  .country-arrow {
+    color: var(--primary);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  .country-option:hover .country-arrow {
+    opacity: 1;
+    transform: translateX(5px);
+  }
+
+  .quote-form {
+    background: white;
+    padding: 3rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--dark);
+    font-size: 0.95rem;
+  }
+
+  input, select, textarea {
+    padding: 1rem 1.25rem;
+    border: 2px solid var(--light);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 4px rgba(30,58,138,0.1);
+  }
+
+  textarea {
+    resize: vertical;
+    font-family: inherit;
+  }
+
+  select {
+    cursor: pointer;
+  }
+
+  .btn-submit {
+    width: 100%;
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: white;
+    padding: 1.3rem 2rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    box-shadow: 0 10px 30px rgba(30,58,138,0.4);
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(30,58,138,0.5);
+  }
+
+  @media (max-width: 768px) {
+    .step-header h1 {
+      font-size: 2.5rem;
+    }
+
+    .countries-selector {
+      grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .quote-form {
+      padding: 2rem 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  let selectedDestination = '';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const countryOptions = document.querySelectorAll('.country-option');
+    const backBtn = document.getElementById('backBtn');
+    const selectedCountrySpan = document.getElementById('selectedCountry');
+    const quoteForm = document.getElementById('quoteForm');
+
+    // Selección de país
+    countryOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        const countryCode = option.getAttribute('data-country');
+        const countryName = option.querySelector('.country-name')?.textContent;
+        const countryFlag = option.querySelector('.country-flag')?.textContent;
+        
+        selectedDestination = countryCode || '';
+        if (selectedCountrySpan && countryName && countryFlag) {
+          selectedCountrySpan.textContent = `${countryFlag} ${countryName}`;
+        }
+        
+        step1?.classList.remove('active');
+        step2?.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    // Botón volver
+    backBtn?.addEventListener('click', () => {
+      step2?.classList.remove('active');
+      step1?.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Envío del formulario
+    quoteForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert(`¡Solicitud enviada! Destino: ${selectedDestination}\nNos contactaremos contigo pronto.`);
+      window.location.href = '/';
+    });
+  });
+</script>

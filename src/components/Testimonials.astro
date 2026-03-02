@@ -1,0 +1,180 @@
+---
+const testimonials = [
+  {
+    name: "Carlos Mendoza",
+    position: "Director de Operaciones",
+    company: "Minera del Sur",
+    text: "ShipLog ha transformado nuestra logística. La puntualidad y seguridad en el transporte de nuestros equipos mineros es excepcional.",
+    rating: 5
+  },
+  {
+    name: "Ana Rodríguez",
+    position: "Gerente de Logística",
+    company: "Constructora Continental",
+    text: "Trabajamos con ShipLog desde hace 5 años. Su profesionalismo y capacidad de respuesta ante situaciones complejas es incomparable.",
+    rating: 5
+  },
+  {
+    name: "Roberto Silva",
+    position: "CEO",
+    company: "Agroindustrias del Pacífico",
+    text: "La tecnología de seguimiento en tiempo real nos da tranquilidad total. Sabemos exactamente dónde está nuestra carga en todo momento.",
+    rating: 5
+  }
+];
+---
+
+<section id="testimonios" class="testimonials">
+  <div class="container">
+    <h2 class="fade-in">Lo que Dicen Nuestros Clientes</h2>
+    <p class="section-subtitle fade-in">Confianza construida sobre resultados reales</p>
+    
+    <div class="testimonials-grid">
+      {testimonials.map((testimonial, index) => (
+        <div class="testimonial-card scale-in" style={`transition-delay: ${index * 0.15}s`}>
+          <div class="quote-icon">"</div>
+          <div class="rating">
+            {Array.from({ length: testimonial.rating }).map(() => (
+              <span class="star">⭐</span>
+            ))}
+          </div>
+          <p class="testimonial-text">{testimonial.text}</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="50" fill="url(#avatarGrad{index})"/>
+                <defs>
+                  <linearGradient id={`avatarGrad${index}`} x1="0" y1="0" x2="100" y2="100">
+                    <stop offset="0%" stop-color="var(--primary)"/>
+                    <stop offset="100%" stop-color="var(--secondary)"/>
+                  </linearGradient>
+                </defs>
+                <text x="50" y="65" text-anchor="middle" fill="white" font-size="40" font-weight="bold">
+                  {testimonial.name.charAt(0)}
+                </text>
+              </svg>
+            </div>
+            <div class="author-info">
+              <div class="author-name">{testimonial.name}</div>
+              <div class="author-position">{testimonial.position}</div>
+              <div class="author-company">{testimonial.company}</div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    background: white;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--gray);
+    margin-bottom: 4rem;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+  }
+
+  .testimonial-card {
+    background: white;
+    padding: 3rem;
+    border-radius: 24px;
+    border: 2px solid var(--light);
+    position: relative;
+    transition: all 0.4s ease;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 80px rgba(0,102,255,0.15);
+    border-color: var(--primary);
+  }
+
+  .quote-icon {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 5rem;
+    color: var(--primary);
+    opacity: 0.1;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  .rating {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .star {
+    font-size: 1.2rem;
+  }
+
+  .testimonial-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--dark);
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--light);
+  }
+
+  .author-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .author-avatar svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .author-name {
+    font-weight: 700;
+    color: var(--dark);
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .author-position {
+    font-size: 0.95rem;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .author-company {
+    font-size: 0.9rem;
+    color: var(--gray);
+  }
+
+  @media (max-width: 768px) {
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .testimonial-card {
+      padding: 2rem;
+    }
+  }
+</style>

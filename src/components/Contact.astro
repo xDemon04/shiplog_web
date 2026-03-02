@@ -1,0 +1,174 @@
+---
+---
+
+<section id="contacto" class="contact">
+  <div class="container">
+    <h2 class="fade-in">Contacto</h2>
+    <div class="contact-content">
+      <div class="contact-info">
+        <div class="info-card scale-in">
+          <div class="info-icon">📧</div>
+          <h3>Email</h3>
+          <p>contacto@shiplog.com</p>
+          <p>ventas@shiplog.com</p>
+        </div>
+        
+        <div class="info-card scale-in" style="transition-delay: 0.1s">
+          <div class="info-icon">📞</div>
+          <h3>Teléfono</h3>
+          <p>+XX XXX XXX XXXX</p>
+          <p>Lunes a Viernes: 8:00 - 18:00</p>
+        </div>
+        
+        <div class="info-card scale-in" style="transition-delay: 0.2s">
+          <div class="info-icon">📍</div>
+          <h3>Oficinas</h3>
+          <p>Presencia en 10 países</p>
+          <p>Argentina, Brasil, Chile, Perú y más</p>
+        </div>
+      </div>
+      
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    background: var(--light);
+  }
+
+  .contact-content {
+    display: grid;
+    gap: 4rem;
+  }
+
+  .contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .info-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    text-align: center;
+    border: 2px solid rgba(0,102,255,0.1);
+    transition: all 0.4s ease;
+  }
+
+  .info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,102,255,0.15);
+    border-color: var(--primary);
+  }
+
+  .info-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: all 0.4s ease;
+  }
+
+  .info-card:hover .info-icon {
+    transform: rotate(5deg) scale(1.1);
+  }
+
+  .info-card h3 {
+    color: var(--dark);
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .info-card p {
+    color: var(--gray);
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .contact-cta {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 4rem;
+    border-radius: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-cta::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 15s ease-in-out infinite;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-cta h3 {
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+  }
+
+  .contact-cta p {
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.95;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+
+  .btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: white;
+    color: var(--primary);
+    padding: 1.2rem 2.5rem;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  .btn-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  }
+
+  @media (max-width: 768px) {
+    .contact-cta {
+      padding: 3rem 2rem;
+    }
+
+    .contact-cta h3 {
+      font-size: 2rem;
+    }
+
+    .contact-cta p {
+      font-size: 1.1rem;
+    }
+  }
+</style>

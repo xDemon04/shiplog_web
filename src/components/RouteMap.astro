@@ -1,0 +1,462 @@
+---
+const countries = [
+  { name: "Argentina", flag: "🇦🇷", lat: -38.4161, lng: -63.6167, color: "#1e3a8a" },
+  { name: "Uruguay", flag: "🇺🇾", lat: -32.5228, lng: -55.7658, color: "#2563eb" },
+  { name: "Brasil", flag: "🇧🇷", lat: -14.2350, lng: -51.9253, color: "#1e3a8a" },
+  { name: "Paraguay", flag: "🇵🇾", lat: -23.4425, lng: -58.4438, color: "#2563eb" },
+  { name: "Chile", flag: "🇨🇱", lat: -35.6751, lng: -71.5430, color: "#1e3a8a" },
+  { name: "Perú", flag: "🇵🇪", lat: -9.1900, lng: -75.0152, color: "#2563eb" },
+  { name: "Colombia", flag: "🇨🇴", lat: 4.5709, lng: -74.2973, color: "#1e3a8a" },
+  { name: "Ecuador", flag: "🇪🇨", lat: -1.8312, lng: -78.1834, color: "#2563eb" },
+];
+---
+
+<section id="rutas" class="countries-map">
+  <div class="map-wrapper">
+    <h2 class="fade-in">Nuestra Cobertura</h2>
+    <p class="section-subtitle fade-in">Presencia en los principales países de Sudamérica</p>
+    
+    <div class="coverage-container">
+      <!-- Mapa más grande -->
+      <div class="map-section slide-in-left">
+        <div id="map" class="leaflet-map"></div>
+      </div>
+      
+      <!-- Sidebar con países -->
+      <div class="countries-sidebar slide-in-right">
+        <div class="sidebar-header">
+          <h3>Países Activos</h3>
+          <div class="countries-count">{countries.length}</div>
+        </div>
+        
+        <div class="countries-list">
+          {countries.map((country, index) => (
+            <div class="country-item" data-country={country.name} style={`animation-delay: ${index * 0.08}s`}>
+              <div class="country-flag">{country.flag}</div>
+              <div class="country-info">
+                <div class="country-name">{country.name}</div>
+                <div class="country-status">
+                  <span class="status-dot"></span>
+                  <span class="status-text">Activo</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <a href="/cotizar" class="btn-coverage">
+          <span>Solicitar Cotización</span>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .countries-map {
+    background: var(--light);
+    padding: 6rem 0;
+  }
+
+  .map-wrapper {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--gray);
+    margin-bottom: 4rem;
+  }
+
+  .coverage-container {
+    background: white;
+    border-radius: 24px;
+    padding: 0;
+    box-shadow: 0 20px 60px rgba(30,58,138,0.15);
+    border: 1px solid rgba(30,58,138,0.08);
+    display: grid;
+    grid-template-columns: 1fr 550px;
+    overflow: hidden;
+  }
+
+  .map-section {
+    position: relative;
+    padding: 2rem;
+  }
+
+  .leaflet-map {
+    height: 700px;
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(30,58,138,0.1);
+  }
+
+  /* Sidebar de países */
+  .countries-sidebar {
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    border-left: 1px solid rgba(30,58,138,0.08);
+  }
+
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid rgba(30,58,138,0.1);
+  }
+
+  .sidebar-header h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+  }
+
+  .countries-count {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 900;
+    box-shadow: 0 4px 12px rgba(30,58,138,0.3);
+  }
+
+  .countries-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+
+  .countries-list::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .countries-list::-webkit-scrollbar-track {
+    background: rgba(30,58,138,0.05);
+    border-radius: 10px;
+  }
+
+  .countries-list::-webkit-scrollbar-thumb {
+    background: rgba(30,58,138,0.2);
+    border-radius: 10px;
+  }
+
+  .countries-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(30,58,138,0.3);
+  }
+
+  .country-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(30,58,138,0.08);
+    animation: slideInCountry 0.5s ease forwards;
+    opacity: 0;
+    text-align: center;
+  }
+
+  @keyframes slideInCountry {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .country-item:hover {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    border-color: #1e3a8a;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(30,58,138,0.25);
+  }
+
+  .country-item:hover .country-name,
+  .country-item:hover .status-text {
+    color: white;
+  }
+
+  .country-item:hover .status-dot {
+    background: white;
+  }
+
+  .country-flag {
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+
+  .country-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+  }
+
+  .country-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+    transition: color 0.3s ease;
+  }
+
+  .country-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background: #10B981;
+    border-radius: 50%;
+    animation: pulse-dot 2s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(0.9);
+    }
+  }
+
+  .status-text {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .btn-coverage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    color: white;
+    padding: 1.2rem 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(30,58,138,0.3);
+  }
+
+  .btn-coverage:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(30,58,138,0.4);
+  }
+
+  .btn-coverage svg {
+    transition: transform 0.3s ease;
+  }
+
+  .btn-coverage:hover svg {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 968px) {
+    .map-wrapper {
+      padding: 0 2rem;
+    }
+
+    .coverage-container {
+      grid-template-columns: 1fr;
+    }
+
+    .countries-sidebar {
+      border-left: none;
+      border-top: 1px solid rgba(30,58,138,0.08);
+    }
+
+    .countries-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .leaflet-map {
+      height: 500px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .map-wrapper {
+      padding: 0 1.5rem;
+    }
+
+    .countries-map {
+      padding: 4rem 0;
+    }
+
+    .map-section {
+      padding: 1.5rem;
+    }
+
+    .leaflet-map {
+      height: 400px;
+    }
+
+    .countries-sidebar {
+      padding: 2rem 1.5rem;
+    }
+
+    .countries-list {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .countries-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const countries = [
+      { name: "Argentina", flag: "🇦🇷", lat: -38.4161, lng: -63.6167 },
+      { name: "Uruguay", flag: "🇺🇾", lat: -32.5228, lng: -55.7658 },
+      { name: "Brasil", flag: "🇧🇷", lat: -14.2350, lng: -51.9253 },
+      { name: "Paraguay", flag: "🇵🇾", lat: -23.4425, lng: -58.4438 },
+      { name: "Chile", flag: "🇨🇱", lat: -35.6751, lng: -71.5430 },
+      { name: "Perú", flag: "🇵🇪", lat: -9.1900, lng: -75.0152 },
+      { name: "Colombia", flag: "🇨🇴", lat: 4.5709, lng: -74.2973 },
+      { name: "Ecuador", flag: "🇪🇨", lat: -1.8312, lng: -78.1834 },
+    ];
+
+    // Inicializar el mapa centrado en Sudamérica
+    const map = L.map('map', {
+      center: [-15, -60],
+      zoom: 4,
+      zoomControl: true,
+      scrollWheelZoom: false
+    });
+
+    // Agregar capa de mapa (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap',
+      maxZoom: 18
+    }).addTo(map);
+
+    // Crear icono personalizado
+    const customIcon = (flag) => L.divIcon({
+      html: `
+        <div style="
+          background: white;
+          border: 3px solid #1e3a8a;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 20px;
+          box-shadow: 0 4px 12px rgba(30,58,138,0.3);
+          animation: bounce 2s infinite;
+        ">
+          ${flag}
+        </div>
+      `,
+      className: 'custom-marker',
+      iconSize: [40, 40],
+      iconAnchor: [20, 20]
+    });
+
+    // Agregar marcadores para cada país
+    countries.forEach(country => {
+      const marker = L.marker([country.lat, country.lng], {
+        icon: customIcon(country.flag)
+      }).addTo(map);
+
+      // Popup con información
+      marker.bindPopup(`
+        <div style="text-align: center; padding: 0.5rem;">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">${country.flag}</div>
+          <strong style="font-size: 1.1rem; color: #1e3a8a;">${country.name}</strong>
+          <div style="margin-top: 0.5rem; color: #10B981; font-weight: 600;">
+            <span style="display: inline-block; width: 8px; height: 8px; background: #10B981; border-radius: 50%; margin-right: 5px;"></span>
+            Cobertura Activa
+          </div>
+        </div>
+      `);
+    });
+
+    // Interacción con los items de países
+    const countryItems = document.querySelectorAll('.country-item');
+    countryItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const countryName = item.getAttribute('data-country');
+        const country = countries.find(c => c.name === countryName);
+        if (country) {
+          map.setView([country.lat, country.lng], 6, {
+            animate: true,
+            duration: 1
+          });
+        }
+      });
+    });
+  });
+</script>
+
+<style is:global>
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .custom-marker {
+    background: none !important;
+    border: none !important;
+  }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+  }
+
+  .leaflet-popup-tip {
+    display: none !important;
+  }
+</style>

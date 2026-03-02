@@ -1,0 +1,130 @@
+---
+const galleryItems = [
+  { title: "Flota Moderna", category: "Equipamiento" },
+  { title: "Carga Pesada", category: "Servicios" },
+  { title: "Logística Internacional", category: "Operaciones" },
+  { title: "Almacenamiento", category: "Infraestructura" },
+  { title: "Equipo Profesional", category: "Equipo" },
+  { title: "Tecnología GPS", category: "Tecnología" }
+];
+---
+
+<section id="galeria" class="gallery">
+  <div class="container">
+    <h2 class="fade-in">Nuestra Operación</h2>
+    <p class="section-subtitle fade-in">Infraestructura y tecnología de clase mundial</p>
+    
+    <div class="gallery-grid">
+      {galleryItems.map((item, index) => (
+        <div class="gallery-item scale-in" style={`transition-delay: ${index * 0.1}s`}>
+          <div class="gallery-image">
+            <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="300" fill="url(#galleryGrad{index})"/>
+              <defs>
+                <linearGradient id={`galleryGrad${index}`} x1="0" y1="0" x2="400" y2="300">
+                  <stop offset="0%" stop-color={index % 2 === 0 ? "#0066FF" : "#00A3FF"}/>
+                  <stop offset="100%" stop-color={index % 2 === 0 ? "#00A3FF" : "#0066FF"}/>
+                </linearGradient>
+              </defs>
+              <circle cx="200" cy="150" r="60" fill="white" opacity="0.2"/>
+              <text x="200" y="160" text-anchor="middle" fill="white" font-size="48" opacity="0.3">📷</text>
+            </svg>
+            <div class="gallery-overlay">
+              <div class="gallery-content">
+                <span class="gallery-category">{item.category}</span>
+                <h3>{item.title}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery {
+    background: var(--light);
+  }
+
+  .section-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--gray);
+    margin-bottom: 4rem;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .gallery-item {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .gallery-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    aspect-ratio: 4/3;
+  }
+
+  .gallery-image svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .gallery-item:hover .gallery-image svg {
+    transform: scale(1.1);
+  }
+
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+    display: flex;
+    align-items: flex-end;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .gallery-item:hover .gallery-overlay {
+    opacity: 1;
+  }
+
+  .gallery-content {
+    color: white;
+  }
+
+  .gallery-category {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .gallery-content h3 {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

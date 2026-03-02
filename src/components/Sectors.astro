@@ -1,0 +1,156 @@
+---
+const sectors = [
+  {
+    name: "Minería",
+    description: "Transporte de maquinaria pesada, equipos mineros y materiales",
+    icon: "⛏️",
+    color: "#FF6B35"
+  },
+  {
+    name: "Construcción",
+    description: "Logística para materiales de construcción y equipamiento industrial",
+    icon: "🏗️",
+    color: "#F7931E"
+  },
+  {
+    name: "Energía",
+    description: "Movimiento de equipos para proyectos de energía y petróleo",
+    icon: "⚡",
+    color: "#FDC830"
+  },
+  {
+    name: "Agricultura",
+    description: "Transporte de maquinaria agrícola y productos del sector",
+    icon: "🌾",
+    color: "#37B34A"
+  },
+  {
+    name: "Manufactura",
+    description: "Distribución de productos manufacturados y materias primas",
+    icon: "🏭",
+    color: "#0066FF"
+  },
+  {
+    name: "Tecnología",
+    description: "Logística especializada para equipos tecnológicos sensibles",
+    icon: "💻",
+    color: "#8B5CF6"
+  }
+];
+---
+
+<section id="sectores" class="sectors">
+  <div class="container">
+    <h2 class="fade-in">Sectores que Atendemos</h2>
+    <p class="section-subtitle fade-in">Experiencia especializada en múltiples industrias</p>
+    
+    <div class="sectors-grid">
+      {sectors.map((sector, index) => (
+        <div class="sector-card slide-in-left" style={`transition-delay: ${index * 0.1}s`}>
+          <div class="sector-icon-bg" style={`background: linear-gradient(135deg, ${sector.color}20, ${sector.color}10)`}>
+            <div class="sector-icon">{sector.icon}</div>
+          </div>
+          <div class="sector-content">
+            <h3>{sector.name}</h3>
+            <p>{sector.description}</p>
+          </div>
+          <div class="sector-hover-effect" style={`background: ${sector.color}`}></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .sectors {
+    background: white;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--gray);
+    margin-bottom: 4rem;
+  }
+
+  .sectors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .sector-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    border: 2px solid var(--light);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .sector-hover-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    transform: scaleY(0);
+    transition: transform 0.4s ease;
+  }
+
+  .sector-card:hover .sector-hover-effect {
+    transform: scaleY(1);
+  }
+
+  .sector-card:hover {
+    transform: translateX(10px);
+    box-shadow: 0 15px 40px rgba(0,102,255,0.1);
+    border-color: var(--primary);
+  }
+
+  .sector-icon-bg {
+    width: 70px;
+    height: 70px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.4s ease;
+  }
+
+  .sector-card:hover .sector-icon-bg {
+    transform: rotate(-5deg) scale(1.1);
+  }
+
+  .sector-icon {
+    font-size: 2.2rem;
+  }
+
+  .sector-content {
+    flex: 1;
+  }
+
+  .sector-card h3 {
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  .sector-card p {
+    color: var(--gray);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .sectors-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

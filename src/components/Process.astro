@@ -1,0 +1,133 @@
+---
+const steps = [
+  {
+    number: "01",
+    title: "Solicitud",
+    description: "Complete nuestro formulario o contáctenos directamente",
+    icon: "📝"
+  },
+  {
+    number: "02",
+    title: "Cotización",
+    description: "Reciba una propuesta personalizada en menos de 24 horas",
+    icon: "💰"
+  },
+  {
+    number: "03",
+    title: "Planificación",
+    description: "Diseñamos la ruta óptima y coordinamos todos los detalles",
+    icon: "🗺️"
+  },
+  {
+    number: "04",
+    title: "Transporte",
+    description: "Ejecutamos el servicio con seguimiento en tiempo real",
+    icon: "🚛"
+  },
+  {
+    number: "05",
+    title: "Entrega",
+    description: "Su carga llega segura y a tiempo a su destino",
+    icon: "✅"
+  }
+];
+---
+
+<section id="proceso" class="process">
+  <div class="container">
+    <h2 class="fade-in">Cómo Trabajamos</h2>
+    <p class="section-subtitle fade-in">Un proceso simple y transparente de principio a fin</p>
+    
+    <div class="process-timeline">
+      {steps.map((step, index) => (
+        <div class="process-step slide-in-left" style={`transition-delay: ${index * 0.15}s`}>
+          <div class="step-number">{step.number}</div>
+          <div class="step-content">
+            <div class="step-icon">{step.icon}</div>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </div>
+          {index < steps.length - 1 && <div class="step-connector"></div>}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .process {
+    background: white;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--gray);
+    margin-bottom: 5rem;
+  }
+
+  .process-timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    position: relative;
+  }
+
+  .process-step {
+    position: relative;
+    text-align: center;
+  }
+
+  .step-number {
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--primary);
+    opacity: 0.15;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .step-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    border: 2px solid var(--light);
+    transition: all 0.4s ease;
+  }
+
+  .process-step:hover .step-content {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(0,102,255,0.15);
+    border-color: var(--primary);
+  }
+
+  .step-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+  }
+
+  .step-content h3 {
+    color: var(--dark);
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+  }
+
+  .step-content p {
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 968px) {
+    .process-timeline {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
