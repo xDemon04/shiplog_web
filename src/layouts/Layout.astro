@@ -20,11 +20,11 @@ const isQuotePage = Astro.url.pathname === '/cotizar';
     <header>
       <nav class="navbar">
         <div class="container">
-          <a href="/" class="logo">
+          <a href="/shiplog_web" class="logo">
             <img src="/images/logo.avif" alt="ShipLog" class="logo-image" />
           </a>
           {isQuotePage ? (
-            <a href="/" class="btn-back-home">
+            <a href="/shiplog_web" class="btn-back-home">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -32,10 +32,10 @@ const isQuotePage = Astro.url.pathname === '/cotizar';
             </a>
           ) : (
             <ul class="nav-links">
-              <li><a href="/#inicio">Inicio</a></li>
-              <li><a href="/nosotros">Nosotros</a></li>
-              <li><a href="/#servicios">Servicios</a></li>
-              <li><a href="/#rutas">Rutas</a></li>
+              <li><a href="/shiplog_web#inicio">Inicio</a></li>
+              <li><a href="/shiplog_web/nosotros">Nosotros</a></li>
+              <li><a href="/shiplog_web#servicios">Servicios</a></li>
+              <li><a href="/shiplog_web#rutas">Rutas</a></li>
               <li><a href="/shiplog_web/cotizar" class="nav-cta">Cotizar</a></li>
             </ul>
           )}
