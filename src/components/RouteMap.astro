@@ -44,7 +44,7 @@ const countries = [
           ))}
         </div>
         
-        <a href="/cotizar" class="btn-coverage">
+        <a href="/shiplog_web/cotizar" class="btn-coverage">
           <span>Solicitar Cotización</span>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -349,7 +349,7 @@ const countries = [
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<script>
+<script>declare const L: any;
   document.addEventListener('DOMContentLoaded', () => {
     const countries = [
       { name: "Argentina", flag: "🇦🇷", lat: -38.4161, lng: -63.6167 },
