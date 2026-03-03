@@ -21,7 +21,7 @@ const isQuotePage = Astro.url.pathname === '/cotizar';
       <nav class="navbar">
         <div class="container">
           <a href="/shiplog_web" class="logo">
-            <img src="/images/logo.avif" alt="ShipLog" class="logo-image" />
+            <img src="/shiplog_web/images/logo.avif" alt="ShipLog" class="logo-image" />
           </a>
           {isQuotePage ? (
             <a href="/shiplog_web" class="btn-back-home">
@@ -32,7 +32,7 @@ const isQuotePage = Astro.url.pathname === '/cotizar';
             </a>
           ) : (
             <ul class="nav-links">
-              <li><a href="/shiplog_web#inicio">Inicios</a></li>
+              <li><a href="/shiplog_web#inicio">Inicio</a></li>
               <li><a href="/shiplog_web/nosotros">Nosotros</a></li>
               <li><a href="/shiplog_web#servicios">Servicios</a></li>
               <li><a href="/shiplog_web#rutas">Rutas</a></li>
@@ -65,16 +65,16 @@ const isQuotePage = Astro.url.pathname === '/cotizar';
           
           <div class="footer-section">
             <h4>Servicios</h4>
-            <p><a href="/#servicios" style="color: inherit; text-decoration: none;">Transporte de Carga Pesada</a></p>
-            <p><a href="/#servicios" style="color: inherit; text-decoration: none;">Logística Internacional</a></p>
-            <p><a href="/#servicios" style="color: inherit; text-decoration: none;">Almacenamiento</a></p>
-            <p><a href="/#servicios" style="color: inherit; text-decoration: none;">Gestión Aduanera</a></p>
+            <p><a href="/shiplog_web#servicios" style="color: inherit; text-decoration: none;">Transporte de Carga Pesada</a></p>
+            <p><a href="/shiplog_web#servicios" style="color: inherit; text-decoration: none;">Logística Internacional</a></p>
+            <p><a href="/shiplog_web#servicios" style="color: inherit; text-decoration: none;">Almacenamiento</a></p>
+            <p><a href="/shiplog_web#servicios" style="color: inherit; text-decoration: none;">Gestión Aduanera</a></p>
           </div>
           
           <div class="footer-section">
             <h4>Empresa</h4>
             <p><a href="/shiplog_web/nosotros" style="color: inherit; text-decoration: none;">Sobre Nosotros</a></p>
-            <p><a href="/#rutas" style="color: inherit; text-decoration: none;">Nuestras Rutas</a></p>
+            <p><a href="/shiplog_web#rutas" style="color: inherit; text-decoration: none;">Nuestras Rutas</a></p>
             <p><a href="/shiplog_web/cotizar" style="color: inherit; text-decoration: none;">Cotizar</a></p>
           </div>
           
