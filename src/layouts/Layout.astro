@@ -23,11 +23,11 @@ const isQuotePage = Astro.url.pathname === '/cotizar';
     <header>
       <nav class="navbar">
         <div class="container">
-          <a href="/shiplog_web" class="logo">
+          <a href="/" class="logo">
             <Image src={logoImage} alt="ShipLog" class="logo-image" />
           </a>
           {isQuotePage ? (
-            <a href="/shiplog_web" class="btn-back-home">
+            <a href="/" class="btn-back-home">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
