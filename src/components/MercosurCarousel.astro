@@ -20,6 +20,8 @@ const countries = [
   { name: "Ecuador", flag: "🇪🇨", image: ecuadorImg },
 ];
 
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 // Duplicamos los países para el efecto de scroll infinito
 const displayCountries = [...countries, ...countries];
 ---
@@ -62,7 +64,7 @@ const displayCountries = [...countries, ...countries];
     <div class="container">
       <div class="footer-content">
         <p class="count-text">Actualmente cubrimos <strong>{countries.length} países</strong> en toda la región con logística de primer nivel.</p>
-        <a href="/shiplog_web/cotizar" class="cta-button">
+        <a href={`${baseUrl}/cotizar`} class="cta-button">
           <span>Cotizar mi Envío</span>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>

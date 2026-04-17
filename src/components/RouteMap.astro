@@ -9,6 +9,7 @@ const countries = [
   { name: "Colombia", flag: "🇨🇴", lat: 4.5709, lng: -74.2973, color: "#1e3a8a" },
   { name: "Ecuador", flag: "🇪🇨", lat: -1.8312, lng: -78.1834, color: "#2563eb" },
 ];
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <section id="rutas" class="countries-map">
@@ -53,7 +54,7 @@ const countries = [
         </button>
         
         
-        <a href="/shiplog_web/cotizar" class="btn-coverage">
+        <a href={`${baseUrl}/cotizar`} class="btn-coverage">
           <span>Solicitar Cotización</span>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

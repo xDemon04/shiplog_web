@@ -6,6 +6,7 @@ import ltlImg from '../assets/images/ltl.jpeg';
 import insuranceImg from '../assets/images/insurance.jpeg';
 import almcImg from '../assets/images/almc.jpeg';
 import asesoriaImg from '../assets/images/asesoria.png';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <section id="servicios" class="services">
@@ -65,7 +66,7 @@ import asesoriaImg from '../assets/images/asesoria.png';
               Conexión directa con navieras y aerolíneas
             </li>
           </ul>
-          <a href="/cotizar" class="service-btn">
+          <a href={`${baseUrl}/cotizar`} class="service-btn">
             <span>Cotizar Ahora</span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -83,7 +84,7 @@ import asesoriaImg from '../assets/images/asesoria.png';
         <span class="header-badge">Nuestros Servicios</span>
         <h2>Tipos de servicio</h2>
         <p>Para cada envío, evaluamos las opciones de servicio disponibles y asesoramos a nuestros clientes para que tomen decisiones informadas y optimizadas, garantizando un transporte seguro y eficiente.</p>
-        <a href="/cotizar" class="btn-quote">Cotiza ahora</a>
+        <a href={`${baseUrl}/cotizar`} class="btn-quote">Cotiza ahora</a>
       </div>
 
       <div class="services-carousel">

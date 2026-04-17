@@ -16,6 +16,7 @@ import refrigeradoImg from '../assets/images/refrigerado.png';
 import camaBajaImg from '../assets/images/camabaja.png';
 
 const optimizedHeroBg = await getImage({ src: heroBg, format: 'avif' });
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <Layout title="Acerca de Nosotros - ShipLog">
@@ -331,7 +332,7 @@ const optimizedHeroBg = await getImage({ src: heroBg, format: 'avif' });
       <div class="cta-box fade-in">
         <h2>¿Listo para optimizar tu logística?</h2>
         <p>Conectamos tu negocio con soluciones de transporte internacional confiables y eficientes</p>
-        <a href="/shiplog_web/cotizar" class="btn-cta">
+        <a href={`${baseUrl}/cotizar`} class="btn-cta">
           <span>Solicitar Cotización</span>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

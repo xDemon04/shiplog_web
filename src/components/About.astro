@@ -1,4 +1,5 @@
 ---
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <section id="nosotros" class="about">
@@ -124,7 +125,8 @@
               </div>
             </div>
 
-            <a href="/cotizar" class="btn-primary-cta">
+            <a href={`${baseUrl}/cotizar`} class="btn-primary-cta">
+"btn-primary-cta">
               <span>Solicitar Cotización Gratuita</span>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

@@ -7,7 +7,13 @@ interface Props {
 }
 
 const { title } = Astro.props;
-const isQuotePage = Astro.url.pathname === '/cotizar';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
+const currentPath = Astro.url.pathname.replace(/\/$/, "");
+const isHome = currentPath === baseUrl || currentPath === "";
+const isQuotePage = currentPath.endsWith('/cotizar');
+
+const getHomeLink = (hash: string) => isHome ? hash : `${baseUrl}/${hash}`;
+const getPageLink = (path: string) => `${baseUrl}${path}`;
 ---
 
 <!doctype html>
@@ -16,18 +22,18 @@ const isQuotePage = Astro.url.pathname === '/cotizar';
     <meta charset="UTF-8" />
     <meta name="description" content="ShipLog - Soluciones de logística y transporte de carga pesada en Sudamérica" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${baseUrl}/favicon.svg`} />
     <title>{title}</title>
   </head>
   <body>
     <header>
       <nav class="navbar">
         <div class="container">
-          <a href="/" class="logo">
+          <a href={getPageLink("/")} class="logo">
             <Image src={logoImage} alt="ShipLog" class="logo-image" />
           </a>
           {isQuotePage ? (
-            <a href="/" class="btn-back-home">
+            <a href={getPageLink("/")} class="btn-back-home">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -41,11 +47,11 @@ const isQuotePage = Astro.url.pathname === '/cotizar';
                 <span class="bar"></span>
               </button>
               <ul class="nav-links">
-                <li><a href="/#inicio">Inicio</a></li>
-                <li><a href="nosotros">Nosotros</a></li>
-                <li><a href="#servicios">Servicios</a></li>
-                <li><a href="#rutas">Rutas</a></li>
-                <li><a href="/cotizar" class="nav-cta">Cotizar</a></li>
+                <li><a href={getHomeLink("#inicio")}>Inicio</a></li>
+                <li><a href={getPageLink("/nosotros")}>Nosotros</a></li>
+                <li><a href={getHomeLink("#servicios")}>Servicios</a></li>
+                <li><a href={getHomeLink("#rutas")}>Rutas</a></li>
+                <li><a href={getPageLink("/cotizar")} class="nav-cta">Cotizar</a></li>
               </ul>
             </>
           )}
@@ -75,17 +81,17 @@ const isQuotePage = Astro.url.pathname === '/cotizar';
           
           <div class="footer-section">
             <h4>Servicios</h4>
-            <p><a href="#servicios" style="color: inherit; text-decoration: none;">Transporte de Carga Pesada</a></p>
-            <p><a href="#servicios" style="color: inherit; text-decoration: none;">Logística Internacional</a></p>
-            <p><a href="#servicios" style="color: inherit; text-decoration: none;">Almacenamiento</a></p>
-            <p><a href="#servicios" style="color: inherit; text-decoration: none;">Gestión Aduanera</a></p>
+            <p><a href={getHomeLink("#servicios")} style="color: inherit; text-decoration: none;">Transporte de Carga Pesada</a></p>
+            <p><a href={getHomeLink("#servicios")} style="color: inherit; text-decoration: none;">Logística Internacional</a></p>
+            <p><a href={getHomeLink("#servicios")} style="color: inherit; text-decoration: none;">Almacenamiento</a></p>
+            <p><a href={getHomeLink("#servicios")} style="color: inherit; text-decoration: none;">Gestión Aduanera</a></p>
           </div>
           
           <div class="footer-section">
             <h4>Empresa</h4>
-            <p><a href="nosotros" style="color: inherit; text-decoration: none;">Sobre Nosotros</a></p>
-            <p><a href="#rutas" style="color: inherit; text-decoration: none;">Nuestras Rutas</a></p>
-            <p><a href="/cotizar" style="color: inherit; text-decoration: none;">Cotizar</a></p>
+            <p><a href={getPageLink("/nosotros")} style="color: inherit; text-decoration: none;">Sobre Nosotros</a></p>
+            <p><a href={getHomeLink("#rutas")} style="color: inherit; text-decoration: none;">Nuestras Rutas</a></p>
+            <p><a href={getPageLink("/cotizar")} style="color: inherit; text-decoration: none;">Cotizar</a></p>
           </div>
           
           <div class="footer-section">

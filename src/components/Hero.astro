@@ -2,11 +2,12 @@
 import { getImage } from "astro:assets";
 import heroBg from "../assets/images/hero-background.png";
 
-const optimizedBackground = await getImage({ src: heroBg, format: 'avif' });
+const { src: optimizedBackgroundSrc } = await getImage({ src: heroBg, format: 'avif' });
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 <section id="inicio" class="hero">
   <div class="hero-background">
-    <div class="hero-image" style={`background-image: url(${optimizedBackground.src});`}></div>
+    <div class="hero-image" style={`background-image: url(${optimizedBackgroundSrc});`}></div>
     <div class="hero-overlay"></div>
   </div>
   <div class="hero-container">
@@ -16,8 +17,8 @@ const optimizedBackground = await getImage({ src: heroBg, format: 'avif' });
       <p class="hero-subtitle">Conectamos estratégicamente Brasil, Argentina, Chile, Perú, Paraguay y Uruguay.</p>
       <p class="hero-description">Optimización de rutas, trazabilidad y gestión integral para empresas que requieren precisión logística en el Mercosur.</p>
       <div class="hero-buttons">
-        <a href="/shiplog_web/cotizar" class="btn btn-primary">Solicitar Cotización</a>
-        <a href="shiplog_web#servicios" class="btn btn-secondary">Conocer Nuestra Flota</a>
+        <a href={`${baseUrl}/cotizar`} class="btn btn-primary">Solicitar Cotización</a>
+        <a href="#servicios" class="btn btn-secondary">Conocer Nuestra Flota</a>
       </div>
       <div class="hero-stats">
         <div class="stat-item scale-in">
