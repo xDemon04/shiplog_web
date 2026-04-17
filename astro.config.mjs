@@ -1,8 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
 export default defineConfig({
-  site: 'https://xDemon04.github.io',
-  base: 'shiplog_web'
+  site: process.env.VERCEL ? 'https://shiplog-web.vercel.app' : 'https://xDemon04.github.io',
+  base: process.env.VERCEL ? '/' : '/shiplog_web',
 });
