@@ -717,7 +717,7 @@ const countries = [
         doc.text("www.shiplog.cl", 105, 287, { align: "center" });
         
         // Descargar PDF
-        doc.save(`Cotizacion_ShipLog_${rawFormData.get('01_Empresa')}.pdf`);
+        doc.save(`Resumen_Solicitud_ShipLog_${rawFormData.get('01_Empresa')}.pdf`);
       } catch (pdfError) {
         console.error("Error generating PDF:", pdfError);
       }
