@@ -210,6 +210,15 @@ const countries = [
 <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 <script is:inline src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
+<script is:inline>
+  // Inicializar EmailJS globalmente
+  (function() {
+    if (window.emailjs) {
+      window.emailjs.init("JH5nemZkYaM-rE3iS");
+    }
+  })();
+</script>
+
 <style>
   .quote-page {
     min-height: 100vh;
@@ -571,157 +580,16 @@ const countries = [
       e.preventDefault();
       
       const rawFormData = new FormData(quoteForm);
-      const cleanedFormData = new FormData();
       const button = quoteForm.querySelector('.btn-submit') as HTMLButtonElement;
       const originalContent = button.innerHTML;
 
-      // Generar ID de seguimiento único para usar en PDF y Email
+      // Anti-spam check
+      if (rawFormData.get('botcheck')) return;
+
+      // ID de seguimiento
       const seguimientoID = Math.random().toString(36).substr(2, 9).toUpperCase();
 
-      // 1. GENERAR PDF PROFESIONAL PARA EL CLIENTE
-      try {
-        const { jsPDF } = (window as any).jspdf;
-        const doc = new jsPDF();
-        const blueColor = [30, 58, 138]; // Azul ShipLog #1e3a8a
-        
-        // --- CABECERA ---
-        doc.setFillColor(30, 58, 138);
-        doc.rect(0, 0, 210, 40, 'F');
-        
-        // Logo: Cargar y convertir a ALTA RESOLUCIÓN
-        try {
-          const img = new Image();
-          img.src = '/shiplog_web/images/logo.avif';
-          await new Promise((resolve, reject) => {
-            img.onload = resolve;
-            img.onerror = reject;
-          });
-          
-          // Escalamos el canvas (ej: x4) para obtener más DPI en el PDF
-          const scaleFactor = 4;
-          const canvas = document.createElement('canvas');
-          canvas.width = img.width * scaleFactor;
-          canvas.height = img.height * scaleFactor;
-          const ctx = canvas.getContext('2d');
-          
-          if (ctx) {
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          }
-          
-          const imgData = canvas.toDataURL('image/png', 1.0);
-          
-          // Calculamos el ratio para que no se deforme
-          const imgRatio = img.width / img.height;
-          const logoWidth = 35; 
-          const logoHeight = logoWidth / imgRatio;
-          
-          doc.addImage(imgData, 'PNG', 15, 6, logoWidth, logoHeight, undefined, 'FAST'); 
-        } catch (e) {
-          console.error("Error cargando logo en PDF:", e);
-          doc.setTextColor(255, 255, 255);
-          doc.setFontSize(24);
-          doc.setFont("helvetica", "bold");
-          doc.text("ShipLog", 15, 25);
-        }
-
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(18);
-        doc.setFont("helvetica", "bold");
-        doc.text("RESUMEN DE SOLICITUD", 200, 22, { align: "right" });
-        
-        doc.setFontSize(9);
-        doc.setFont("helvetica", "normal");
-        doc.text(`Seguimiento: ${seguimientoID}`, 200, 30, { align: "right" });
-        doc.text(`Fecha de Solicitud: ${new Date().toLocaleDateString()}`, 200, 35, { align: "right" });
-
-        // --- CUERPO ---
-        // Columna Izquierda: Información del Cliente
-        doc.setTextColor(30, 58, 138);
-        doc.setFontSize(12);
-        doc.setFont("helvetica", "bold");
-        doc.text("INFORMACIÓN DEL CLIENTE", 15, 55);
-        doc.setDrawColor(200);
-        doc.line(15, 57, 95, 57);
-
-        doc.setTextColor(0);
-        doc.setFontSize(10);
-        doc.setFont("helvetica", "bold");
-        doc.text("Empresa:", 15, 65);
-        doc.text("Solicitante:", 15, 71);
-        doc.text("Email:", 15, 77);
-        doc.text("Teléfono:", 15, 83);
-
-        doc.setFont("helvetica", "normal");
-        doc.text(String(rawFormData.get('01_Empresa')), 45, 65);
-        doc.text(String(rawFormData.get('02_Contacto')), 45, 71);
-        doc.text(String(rawFormData.get('03_Email')), 45, 77);
-        doc.text(String(rawFormData.get('04_Telefono')), 45, 83);
-
-        // Columna Derecha: Detalles de la Ruta
-        doc.setTextColor(30, 58, 138);
-        doc.setFont("helvetica", "bold");
-        doc.text("DETALLES DE LA RUTA", 115, 55);
-        doc.line(115, 57, 195, 57);
-
-        doc.setTextColor(0);
-        doc.setFont("helvetica", "bold");
-        doc.text("País Origen:", 115, 65);
-        doc.text("País Destino:", 115, 71);
-        doc.text("Transporte:", 115, 77);
-        doc.text("Servicio:", 115, 83);
-
-        doc.setFont("helvetica", "normal");
-        doc.text(String(rawFormData.get('05_Pais_Origen')), 145, 65);
-        doc.text(selectedDestination, 145, 71);
-        doc.text(String(rawFormData.get('06_Tipo_Transporte')), 145, 77);
-        doc.text(String(rawFormData.get('11_Tipo_Servicio')), 145, 83);
-
-        // --- TABLA DE DETALLES TÉCNICOS ---
-        const tableData = [
-          ["Tipo de Carga", rawFormData.get('10_Tipo_Carga')],
-          ["Modalidad", rawFormData.get('07_Detalle_Maritimo') || rawFormData.get('07_Terrestre_Modalidad') || "Estándar"],
-          ["Contenedor/Camión", rawFormData.get('08_Terrestre_Tipo_Camion') || "N/A"],
-          ["Piezas/Dimensiones", rawFormData.get('07_Aereo_Piezas') ? `${rawFormData.get('07_Aereo_Piezas')} | ${rawFormData.get('08_Aereo_Dimensiones')} cm` : "Ver detalles adicionales"],
-          ["Peso Declarado", rawFormData.get('12_Peso_Toneladas') ? `${rawFormData.get('12_Peso_Toneladas')} Toneladas` : `${rawFormData.get('09_Aereo_Peso_Kg')} Kg`],
-        ];
-
-        (doc as any).autoTable({
-          startY: 95,
-          head: [['ESPECIFICACIÓN', 'VALOR']],
-          body: tableData.filter(row => row[1] && row[1] !== 'N/A'),
-          theme: 'grid',
-          headStyles: { fillColor: [30, 58, 138], fontSize: 10, halign: 'center' },
-          columnStyles: { 0: { fontStyle: 'bold', width: 50 }, 1: { halign: 'left' } },
-          margin: { left: 15, right: 15 }
-        });
-
-        // --- COMENTARIOS ---
-        const lastY = (doc as any).lastAutoTable.finalY + 15;
-        doc.setTextColor(30, 58, 138);
-        doc.setFont("helvetica", "bold");
-        doc.text("OBSERVACIONES ADICIONALES:", 15, lastY);
-        doc.setTextColor(50);
-        doc.setFont("helvetica", "normal");
-        const splitComments = doc.splitTextToSize(String(rawFormData.get('13_Detalles_Adicionales') || "Sin comentarios adicionales."), 180);
-        doc.text(splitComments, 15, lastY + 7);
-
-        // --- PIE DE PÁGINA ---
-        doc.setFontSize(8);
-        doc.setTextColor(150);
-        doc.text("Este documento es un resumen de los datos recibidos. Nuestro equipo procesará su solicitud", 105, 275, { align: "center" });
-        doc.text("y le enviará la cotización formal a través del email o teléfono proporcionado.", 105, 280, { align: "center" });
-        doc.setTextColor(30, 58, 138);
-        doc.setFont("helvetica", "bold");
-        doc.text("www.shiplog.cl", 105, 287, { align: "center" });
-        
-        // Descargar PDF
-        doc.save(`Resumen_Solicitud_ShipLog_${rawFormData.get('01_Empresa')}.pdf`);
-      } catch (pdfError) {
-        console.error("Error generating PDF:", pdfError);
-      }
-
+      // Agrupar datos para EmailJS
       const dataGrouped = {
         empresa: rawFormData.get('01_Empresa'),
         contacto: rawFormData.get('02_Contacto'),
@@ -746,37 +614,136 @@ const countries = [
       try {
         button.disabled = true;
         button.innerHTML = '<span>Enviando...</span>';
-        
-        // ENVIO CON EMAILJS
+
+        // 1. ENVIAR EMAIL PRIMERO (Crítico)
         const serviceID = 'service_1443jv8';
         const templateID = 'template_hrl8yys';
-        const publicKey = 'JH5nemZkYaM-rE3iS';
+        const customFromName = `COTIZACION: ${rawFormData.get('05_Pais_Origen')} -> ${selectedDestination}`;
 
-        // Mejorar el nombre que aparece en Gmail
-        const customFromName = `COTIZACIÓN: ${rawFormData.get('05_Pais_Origen')} ➡️ ${selectedDestination}`;
-
-        const result = await (window as any).emailjs.send(serviceID, templateID, {
+        const emailResult = await (window as any).emailjs.send(serviceID, templateID, {
           ...dataGrouped,
           from_name: customFromName
-        }, publicKey);
+        });
 
-        if (result.status === 200) {
-          button.innerHTML = '<span>✓ ¡Enviado!</span>';
-          button.style.background = '#37B34A';
-          
-          setTimeout(() => {
-            alert('¡Gracias por su solicitud! Su comprobante PDF se ha descargado y nos contactaremos con usted pronto.');
-            window.location.href = '/';
-          }, 1500);
-        } else {
-          throw new Error("Error en EmailJS");
+        if (emailResult.status !== 200) {
+          throw new Error("Error al enviar el email");
         }
+
+        // 2. GENERAR PDF (Opcional si falla, no bloquea el éxito)
+        try {
+          const { jsPDF } = (window as any).jspdf;
+          const doc = new jsPDF();
+          
+          // --- CABECERA ---
+          doc.setFillColor(30, 58, 138);
+          doc.rect(0, 0, 210, 40, 'F');
+          
+          // Logo
+          try {
+            const img = new Image();
+            img.src = '/shiplog_web/images/logo.avif';
+            await new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = reject;
+              setTimeout(resolve, 2000); // Timeout por si no carga
+            });
+            
+            if (img.complete && img.naturalWidth > 0) {
+              const canvas = document.createElement('canvas');
+              const ctx = canvas.getContext('2d');
+              canvas.width = img.width;
+              canvas.height = img.height;
+              ctx?.drawImage(img, 0, 0);
+              const imgData = canvas.toDataURL('image/png');
+              const imgRatio = img.width / img.height;
+              const logoWidth = 35;
+              doc.addImage(imgData, 'PNG', 15, 6, logoWidth, logoWidth / imgRatio);
+            }
+          } catch (e) {
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(24);
+            doc.text("ShipLog", 15, 25);
+          }
+
+          doc.setTextColor(255, 255, 255);
+          doc.setFontSize(18);
+          doc.setFont("helvetica", "bold");
+          doc.text("RESUMEN DE SOLICITUD", 200, 22, { align: "right" });
+          doc.setFontSize(9);
+          doc.text(`Seguimiento: ${seguimientoID}`, 200, 30, { align: "right" });
+          doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 200, 35, { align: "right" });
+
+          // --- CUERPO ---
+          doc.setTextColor(30, 58, 138);
+          doc.setFontSize(12);
+          doc.text("INFORMACIÓN DEL CLIENTE", 15, 55);
+          doc.setDrawColor(200);
+          doc.line(15, 57, 95, 57);
+
+          doc.setTextColor(0);
+          doc.setFontSize(10);
+          doc.setFont("helvetica", "normal");
+          doc.text(`Empresa: ${dataGrouped.empresa}`, 15, 65);
+          doc.text(`Solicitante: ${dataGrouped.contacto}`, 15, 71);
+          doc.text(`Email: ${dataGrouped.email}`, 15, 77);
+          doc.text(`Teléfono: ${dataGrouped.telefono}`, 15, 83);
+
+          doc.setTextColor(30, 58, 138);
+          doc.setFont("helvetica", "bold");
+          doc.text("DETALLES DE LA RUTA", 115, 55);
+          doc.line(115, 57, 195, 57);
+
+          doc.setTextColor(0);
+          doc.setFont("helvetica", "normal");
+          doc.text(`Origen: ${dataGrouped.origen}`, 115, 65);
+          doc.text(`Destino: ${dataGrouped.destino}`, 115, 71);
+          doc.text(`Transporte: ${dataGrouped.transporte}`, 115, 77);
+          doc.text(`Servicio: ${dataGrouped.servicio}`, 115, 83);
+
+          const tableData = [
+            ["Tipo de Carga", dataGrouped.carga],
+            ["Modalidad", dataGrouped.maritimo_modalidad || dataGrouped.terrestre_modalidad || "Estándar"],
+            ["Peso", dataGrouped.peso_ton !== 'N/A' ? `${dataGrouped.peso_ton} Ton` : `${dataGrouped.aereo_peso_kg} Kg`],
+            ["Detalles", dataGrouped.aereo_piezas ? `${dataGrouped.aereo_piezas} piezas` : "Ver abajo"]
+          ];
+
+          (doc as any).autoTable({
+            startY: 95,
+            head: [['ESPECIFICACIÓN', 'VALOR']],
+            body: tableData.filter(row => row[1]),
+            theme: 'grid',
+            headStyles: { fillColor: [30, 58, 138] },
+            margin: { left: 15, right: 15 }
+          });
+
+          const lastY = (doc as any).lastAutoTable.finalY + 15;
+          doc.text("OBSERVACIONES:", 15, lastY);
+          doc.setFont("helvetica", "normal");
+          const splitComments = doc.splitTextToSize(String(dataGrouped.comentarios), 180);
+          doc.text(splitComments, 15, lastY + 7);
+
+          // Descargar (En iOS esto puede abrir una nueva pestaña)
+          doc.save(`ShipLog_Cotizacion_${seguimientoID}.pdf`);
+        } catch (pdfError) {
+          console.error("Error PDF:", pdfError);
+        }
+
+        // 3. ÉXITO FINAL
+        button.innerHTML = '<span>✓ ¡Enviado!</span>';
+        button.style.background = '#37B34A';
+        
+        setTimeout(() => {
+          alert('¡Gracias por su solicitud! Su comprobante se ha descargado y nos contactaremos pronto.');
+          window.location.href = '/';
+        }, 1000);
+
       } catch (error) {
-        console.error(error);
-        alert('Hubo un error al enviar el formulario. Por favor, intente nuevamente.');
+        console.error("Error en envío:", error);
+        alert('Hubo un error al enviar el formulario. Por favor, intente nuevamente o escríbanos a contacto@shiplog.cl');
         button.innerHTML = originalContent;
         button.disabled = false;
       }
+    });
     });
   });
 </script>
